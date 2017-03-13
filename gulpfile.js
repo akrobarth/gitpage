@@ -15,6 +15,8 @@ var
   autoprefixer = require('autoprefixer'),
   mqpacker = require('css-mqpacker'),
   cssnano = require('cssnano'),
+  browserSync = require('browser-sync').create(),
+  reload = browserSync.reload,
 
   // development mode?
   devBuild = (process.env.NODE_ENV !== 'production'),
@@ -92,8 +94,15 @@ gulp.task('css', ['images'], function() {
 
 });
 
+gulp.task('reload', function (done) {
+    browserSync.reload();
+    done();
+});
+
 // run all tasks
 gulp.task('run', ['html', 'css', 'js']);
+
+
 
 // watch for changes
 gulp.task('watch', function() {
@@ -110,7 +119,19 @@ gulp.task('watch', function() {
   // css changes
   gulp.watch(folder.src + 'scss/**/*', ['css']);
 
+  // css changes
+  gulp.watch(folder.src + '***/**/*', ['reload']);
 });
 
-// default task
-gulp.task('default', ['run', 'watch']);
+
+// livereload
+gulp.task('serve', ['run', 'watch'], function () {
+    // Serve files from the root of this project
+    browserSync.init({
+        server: {
+            baseDir: "./build/html/"
+        }
+    });
+
+    
+});
