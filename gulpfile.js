@@ -54,7 +54,6 @@ gulp.task('html', ['images'], function() {
 
 // JavaScript processing
 gulp.task('js', function() {
-
   var jsbuild = gulp.src(folder.src + 'js/**/*')
     .pipe(deporder())
     .pipe(concat('main.js'));
@@ -71,7 +70,6 @@ gulp.task('js', function() {
 
 // CSS processing
 gulp.task('css', ['images'], function() {
-
   var postCssOpts = [
   assets({ loadPaths: ['images/'] }),
   autoprefixer({ browsers: ['last 2 versions', '> 2%'] }),
@@ -120,7 +118,7 @@ gulp.task('watch', function() {
   gulp.watch(folder.src + 'scss/**/*', ['css']);
 
   // css changes
-  gulp.watch(folder.src + '***/**/*', ['reload']);
+  gulp.watch(folder.build, ['reload']);
 });
 
 
@@ -129,7 +127,8 @@ gulp.task('serve', ['run', 'watch'], function () {
     // Serve files from the root of this project
     browserSync.init({
         server: {
-            baseDir: "./build/html/"
+            baseDir: "build",
+            index: "/html/index.html"
         }
     });
 
